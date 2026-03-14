@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>単純CT検査（CT检查）语音指南</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="frame-title">
+    <h1>単純CT検査</h1>
+    <p>中文语音指南</p>
+  </div>
+</div>
+
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
+
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
+  </div>
+
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
+
+  <div class="label">中文（脚本）</div>
+  <div class="en" id="en"></div>
+
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / 准备就绪</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
+</div>
+
+<script>
+const STEPS = [
+ {preview:"すみません、少しよろしいですか？", jp:"すみません、少しよろしいですか？", en:"不好意思，可以打扰您一下吗？ (Bù hǎo yìsi, kěyǐ dǎrǎo nín yíxià ma?)"},
+ {preview:"こちらをご覧ください。これはあな…", jp:"こちらをご覧ください。これはあなたのお名前と生年月日で合っていますか？", en:"请看一下，这是不是您的姓名和出生日期？ (Qǐng kàn yíxià, zhè shì bú shì nín de xìngmíng hé chūshēng rìqī ma?)"},
+ {preview:"お名前と生年月日を教えていただけ…", jp:"お名前と生年月日を教えていただけますか？", en:"可以请您说一下您的姓名和出生日期吗？ (Kěyǐ qǐng nín shuō yíxià nín de xìngmíng hé chūshēng rìqī ma?)"},
+ {preview:"簡単な日本語は理解できますか？", jp:"簡単な日本語は理解できますか？", en:"您能听懂简单的日语吗？ (Nín néng tīng dǒng jiǎndān de Rìyǔ ma?)"},
+ {preview:"胸にペースメーカーやICD、CRT…", jp:"胸にペースメーカーやICD、CRTなどの心臓の機器はありますか？", en:"您的胸部有心脏起搏器、ICD 或 CRT 等心脏装置吗？ (Nín de xiōngbù yǒu xīnzàng qǐbóqì, ICD huò CRT děng xīnzàng zhuāngzhì ma?)"},
+ {preview:"PM、CRT-Pありの場合：では検…", jp:"PM、CRT-Pありの場合：では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。", en:"如果您装有 PM 或 CRT-P，我们会在检查结束后确认您的心脏装置是否正常工作。 (Rúguǒ nín zhuāng yǒu PM huò CRT-P, wǒmen huì zài jiǎnchá jiéshù hòu quèrèn nín de xīnzàng zhuāngzhì shìfǒu zhèngcháng gōngzuò.)"},
+ {preview:"ICD、CRT-Dありの場合：では…", jp:"ICD、CRT-Dありの場合：では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。", en:"如果您装有 ICD 或 CRT-D，我们会在检查前后确认您的心脏装置是否正常工作。 (Rúguǒ nín zhuāng yǒu ICD huò CRT-D, wǒmen huì zài jiǎnchá qiánhòu quèrèn nín de xīnzàng zhuāngzhì shìfǒu zhèngcháng gōngzuò.)"},
+ {preview:"中国語の音声ガイドを使用します…", jp:"（通訳不在時）中国語の音声ガイドで検査を説明します。音声の指示に従ってください。", en:"我们会用中文语音说明检查，请按照语音的指示进行。 (Wǒmen huì yòng Zhōngwén yǔyīn shuōmíng jiǎnchá, qǐng ànzhào yǔyīn de zhǐshì jìnxíng.)"},
+ {preview:"中国語通訳を呼びますのでお待ち…", jp:"中国語を話せる通訳を呼びますので、しばらくお待ちください。", en:"我们会叫会说中文的翻译，请稍等一下。 (Wǒmen huì jiào huì shuō Zhōngwén de fānyì, qǐng shāo děng yíxià.)"},
+ {preview:"どうぞお入りください。", jp:"どうぞお入りください。", en:"请进。 (Qǐng jìn.)"},
+ {preview:"これからCT検査を行います。", jp:"これからCT検査を行います。", en:"现在要进行 CT 检查。 (Xiànzài yào jìnxíng CT jiǎnchá.)"},
+ {preview:"身につけている金属製品を外して…", jp:"身につけている金属製品を外してください。", en:"请把身上的金属制品取下来。 (Qǐng bǎ shēnshang de jīnshǔ zhìpǐn qǔ xiàlái.)"},
+ {preview:"ベッドに座って靴を脱いでくださ…", jp:"ベッドに座って靴を脱いでください。", en:"请坐在床上，把鞋子脱掉。 (Qǐng zuò zài chuáng shàng, bǎ xiézi tuō diào.)"},
+ {preview:"ベッドに仰向けで寝てください。", jp:"ベッドに仰向けで寝てください。", en:"请仰卧躺在床上。 (Qǐng yǎngwò tǎng zài chuáng shàng.)"},
+ {preview:"頭がここで足先がここです。", jp:"頭がここで足先がここです。", en:"头在这里，脚在那边。 (Tóu zài zhèlǐ, jiǎo zài nàbiān.)"},
+ {preview:"両手を頭の上に上げてください。", jp:"両手を頭の上に上げてください。", en:"请把双手举到头上。 (Qǐng bǎ shuāngshǒu jǔ dào tóu shàng.)"},
+ {preview:"検査中に中国語で息止めの指示を…", jp:"検査中に中国語で息止めの指示を出しますので、その指示に従ってください。", en:"检查过程中会用中文提示您屏住呼吸，请按照提示进行。 (Jiǎnchá guòchéng zhōng huì yòng Zhōngwén tíshì nín píng zhù hūxī, qǐng ànzhào tíshì jìnxíng.)"},
+ {preview:"ベッドが動きます。", jp:"ベッドが動きます。", en:"床会移动。 (Chuáng huì yídòng.)"},
+ {preview:"検査が終わりました。", jp:"検査が終わりました。", en:"检查结束了。 (Jiǎnchá jiéshù le.)"},
+ {preview:"検査ご協力ありがとうございました…", jp:"検査ご協力ありがとうございました。", en:"感谢您的配合。 (Gǎnxiè nín de pèihé.)"},
+ {preview:"ベッドが停止するまでは寝たまま…", jp:"ベッドが停止するまでは寝たままでお願いします。", en:"在床完全停止之前，请保持躺着。 (Zài chuáng wánquán tíngzhǐ zhīqián, qǐng bǎochí tǎng zhe.)"},
+ {preview:"ゆっくり体を起こしてください。", jp:"ゆっくり体を起こしてください。", en:"请慢慢坐起来。 (Qǐng mànman zuò qǐlái.)"},
+ {preview:"次は診察がありますので、10番へ…", jp:"次は診察がありますので、10番へ行ってこのファイルを提出してください。", en:"接下来要看医生，请您到10号，把这个文件交给工作人员。 (Jiēxiàlái yào kàn yīshēng, qǐng nín dào shí hào, bǎ zhège wénjiàn jiāo gěi gōngzuòrényuán.)"},
+ {preview:"19番または20番の前でお待ちくだ…", jp:"19番または20番の検査室の前でお待ちください。", en:"请在19号或20号检查室前等候。 (Qǐng zài shíjiǔ hào huò èrshí hào jiǎncháshì qián děnghòu.)"},
+ {preview:"23番の前でお待ちください。", jp:"23番の検査室の前でお待ちください。", en:"请在23号检查室前等候。 (Qǐng zài èrshísān hào jiǎncháshì qián děnghòu.)"},
+ {preview:"15番の前でお待ちください。", jp:"15番の検査室の前でお待ちください。", en:"请在15号检查室前等候。 (Qǐng zài shíwǔ hào jiǎncháshì qián děnghòu.)"},
+ {preview:"もう着替えてもいいですよ。", jp:"（着替えていい場合）もう着替えてもいいですよ。", en:"您可以换衣服了。 (Nín kěyǐ huàn yīfu le.)"},
+ {preview:"まだ他の検査が残っています。", jp:"（他検査がある場合）まだ他の検査が残っています。", en:"还有其他检查项目。 (Hái yǒu qítā jiǎnchá xiàngmù.)"},
+ {preview:"まだ着替えないでください。", jp:"（他検査がある場合）まだ着替えないでください。", en:"请不要换衣服。 (Qǐng búyào huàn yīfu.)"},
+ {preview:"お大事になさってください。", jp:"お大事になさってください。", en:"请保重。 (Qǐng bǎozhòng.)"},
+];
+
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
+
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
+
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / 准备就绪";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / 播放中";
+player.onpause=()=>status.textContent="一時停止 / 已暂停";
+player.onended=()=>status.textContent="待機中 / 准备就绪";
+load(0);
+</script>
+</body>
+</html>
