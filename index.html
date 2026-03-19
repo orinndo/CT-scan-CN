@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>胸腹部単純CT検査（胸腹部CT检查）语音指南</title>
+<title>単純CT検査 语音指南</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
 background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
@@ -29,7 +29,7 @@ audio{width:100%;margin-top:10px;}
 <body>
 <div class="header">
   <div class="frame-title">
-    <h1>胸腹部単純CT検査</h1>
+    <h1>単純CT検査 中国語ガイド</h1>
     <p>中文语音指南</p>
   </div>
 </div>
@@ -74,16 +74,20 @@ const STEPS = [
  {preview:"どうぞお入りください。", jp:"どうぞお入りください。", en:"请进。 (Qǐng jìn.)"},
  {preview:"これからCT検査を行います。", jp:"これからCT検査を行います。", en:"现在要进行 CT 检查。 (Xiànzài yào jìnxíng CT jiǎnchá.)"},
  {preview:"身につけている金属製品を外して…", jp:"身につけている金属製品を外してください。", en:"请把身上的金属制品取下来。 (Qǐng bǎ shēnshang de jīnshǔ zhìpǐn qǔ xiàlái.)"},
+ {preview:"ピアスや入れ歯など外してください…", jp:"画像に影響するため、ピアス、ネックレス、ヘアピン、ウィッグ、補聴器、入れ歯など、取り外せるものはすべて外してください。", en:"为了避免影响图像，请把耳环、项链、发夹、假发、助听器、假牙等可以取下的物品全部取下来。 (Wèile bìmiǎn yǐngxiǎng túxiàng, qǐng bǎ ěrhuán, xiàngliàn, fàjiā, jiǎfà, zhùtīngqì, jiǎyá děng kěyǐ qǔ xià de wùpǐn quánbù qǔ xiàlái.)"},
  {preview:"（男性）ズボンに金属があり検査に影響…", jp:"（男性）すみません、ズボンに金属があり検査に影響しますので、ベッドに寝た後、膝あたりまでズボンを下げてもらえますか？", en:"不好意思，您的裤子上有金属，会影响检查。请在躺到床上之后，把裤子拉到膝盖附近可以吗？ (Bù hǎo yìsi, nín de kùzi shàng yǒu jīnshǔ, huì yǐngxiǎng jiǎnchá. Qǐng zài tǎng dào chuáng shàng zhīhòu, bǎ kùzi lā dào xīgài fùjìn kěyǐ ma?)"},
  {preview:"（女性）ズボンに金属がありますので更衣室へ…", jp:"（女性）すみません、ズボンに金属があり検査に影響しますので、更衣室で検査着に着替えていただけますか？", en:"不好意思，您的裤子上有金属，会影响检查。请到更衣室换上检查服可以吗？ (Bù hǎo yìsi, nín de kùzi shàng yǒu jīnshǔ, huì yǐngxiǎng jiǎnchá. Qǐng dào gēngyīshì huàn shàng jiǎnchá fú kěyǐ ma?)"},
  {preview:"更衣室は17番受付の隣です…", jp:"（着替えが必要な場合）更衣室は17番受付の隣にあります。検査着に着替えて、終わったらここに戻ってきてください。", en:"更衣室在17号接待处旁边。请换上检查服，换好以后请回到这里。 (Gēngyīshì zài shíqī hào jiēdài chù pángbiān. Qǐng huàn shàng jiǎnchá fú, huàn hǎo yǐhòu qǐng huí dào zhèlǐ.)"},
- {preview:"胸にペースメーカーやICD、CRT…", jp:"胸にペースメーカーやICD、CRTなどの心臓の機器はありますか？", en:"您的胸部有心脏起搏器、ICD 或 CRT 等心脏装置吗？ (Nín de xiōngbù yǒu xīnzàng qǐbóqì, ICD huò CRT děng xīnzàng zhuāngzhì ma?)"},
- {preview:"PM、CRT-Pありの場合：では検…", jp:"PM、CRT-Pありの場合：では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。", en:"我们会在检查结束后确认您的心脏装置是否正常工作。 (Wǒmen huì zài jiǎnchá jiéshù hòu quèrèn nín de xīnzàng zhuāngzhì shìfǒu zhèngcháng gōngzuò.)"},
- {preview:"ICD、CRT-Dありの場合：では…", jp:"ICD、CRT-Dありの場合：では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。", en:"我们会在检查前后确认您的心脏装置是否正常工作。 (Wǒmen huì zài jiǎnchá qiánhòu quèrèn nín de xīnzàng zhuāngzhì shìfǒu zhèngcháng gōngzuò.)"},
+ {preview:"胸にペースメーカーやICD、CRT…", jp:"（撮影範囲に胸部を含める場合のみ）胸にペースメーカーやICD、CRTなどの心臓の機器はありますか？", en:"您的胸部有心脏起搏器、ICD 或 CRT 等心脏装置吗？ (Nín de xiōngbù yǒu xīnzàng qǐbóqì, ICD huò CRT děng xīnzàng zhuāngzhì ma?)"},
+ {preview:"PM、CRT-Pありの場合：では検…", jp:"（PM、CRT-Pありの場合）では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。", en:"我们会在检查结束后确认您的心脏装置是否正常工作。 (Wǒmen huì zài jiǎnchá jiéshù hòu quèrèn nín de xīnzàng zhuāngzhì shìfǒu zhèngcháng gōngzuò.)"},
+ {preview:"ICD、CRT-Dありの場合：では…", jp:"（ICD、CRT-Dありの場合）では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。", en:"我们会在检查前后确认您的心脏装置是否正常工作。 (Wǒmen huì zài jiǎnchá qiánhòu quèrèn nín de xīnzàng zhuāngzhì shìfǒu zhèngcháng gōngzuò.)"},
  {preview:"ベッドに座って靴を脱いでくださ…", jp:"ベッドに座って靴を脱いでください。", en:"请坐在床上，把鞋子脱掉。 (Qǐng zuò zài chuáng shàng, bǎ xiézi tuō diào.)"},
  {preview:"ベッドに仰向けで寝てください。", jp:"ベッドに仰向けで寝てください。", en:"请仰卧躺在床上。 (Qǐng yǎngwò tǎng zài chuáng shàng.)"},
  {preview:"頭がここで足先がここです。", jp:"頭がここで足先がここです。", en:"头在这里，脚在那边。 (Tóu zài zhèlǐ, jiǎo zài nàbiān.)"},
+ {preview:"少し上に動いてください…", jp:"少し上の方に動いてください。", en:"请稍微往上挪一点。 (Qǐng shāowēi wǎng shàng nuó yìdiǎn.)"},
+ {preview:"少し下に動いてください…", jp:"少し下の方に動いてください。", en:"请稍微往下挪一点。 (Qǐng shāowēi wǎng xià nuó yìdiǎn.)"},
  {preview:"両手を頭の上に上げてください。", jp:"両手を頭の上に上げてください。", en:"请把双手举到头上。 (Qǐng bǎ shuāngshǒu jǔ dào tóu shàng.)"},
+ {preview:"頭を動かさないでください…", jp:"（頭部CTのみ）頭を動かさないでください。そのままじっとしてください。", en:"请不要动头，请保持不动。 (Qǐng búyào dòng tóu, qǐng bǎochí bú dòng.)"},
  {preview:"検査中に中国語で息止めの指示を…", jp:"検査中に中国語で息止めの指示を出しますので、その指示に従ってください。", en:"检查过程中会用中文提示您屏住呼吸，请按照提示进行。 (Jiǎnchá guòchéng zhōng huì yòng Zhōngwén tíshì nín píng zhù hūxī, qǐng ànzhào tíshì jìnxíng.)"},
  {preview:"ベッドが動きます。", jp:"ベッドが動きます。", en:"床会移动。 (Chuáng huì yídòng.)"},
  {preview:"検査が終わりました。", jp:"検査が終わりました。", en:"检查结束了。 (Jiǎnchá jiéshù le.)"},
